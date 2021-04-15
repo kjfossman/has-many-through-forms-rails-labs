@@ -1,1 +1,31 @@
 
+<%= @post.title %><br>
+<%= @post.content %><br>
+<% @post.categories.each do |x| %>
+    <%= x.name %>
+    <% end %><br>
+<% @post.comments.each do |x| %>
+    <%= x.content %>
+    <% end %><br>
+
+<% @post.users.uniq.each do |x| %>
+    <%= link_to x.username, user_path(x) %>
+    <% end %><br>
+
+
+<%= form_for @comments do |f| %>
+    <%= f.label :comment_content %>
+    <%= f.text_field :content %><br>
+  
+    <%= f.collection_check_boxes :user_id, User.all, :id, :username %><br>
+
+    <%= f.submit %>
+  <% end %> 
+
+
+
+  
+
+          
+
+
