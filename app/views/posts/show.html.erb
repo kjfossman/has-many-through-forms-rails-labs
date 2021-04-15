@@ -1,11 +1,12 @@
 
-<%= @post.title %><br>
-<%= @post.content %><br>
-<% @post.categories.each do |x| %>
+<p>Post Title: <%= @post.title %></p><br>
+<p>Post Title: <%= @post.content %></p><br>
+<p>Post Category: <% @post.categories.each do |x| %>
     <%= x.name %>
-    <% end %><br>
+    <% end %></p><br>
 <% @post.comments.each do |x| %>
-    <%= x.content %>
+
+    <%= "#{x.user.username} says: #{x.content}" %>
     <% end %><br>
 
 <% @post.users.uniq.each do |x| %>
@@ -13,11 +14,17 @@
     <% end %><br>
 
 
-<%= form_for @comments do |f| %>
+<%= form_for @post.comments.build do |f| %>
+    <%= f.hidden_field :post_id %>
     <%= f.label :comment_content %>
     <%= f.text_field :content %><br>
   
-    <%= f.collection_check_boxes :user_id, User.all, :id, :username %><br>
+    <%= f.collection_select :user_id, User.all, :id, :username %><br>
+
+    <%= f.fields_for :user, User.new do |users| %>
+        <%= users.label :username %>
+        <%= users.text_field :username %>
+      <% end %>
 
     <%= f.submit %>
   <% end %> 
